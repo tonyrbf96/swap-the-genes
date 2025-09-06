@@ -7,10 +7,43 @@
 <body>
   <div class="container">
     <h1>dressmeup</h1>
-    <p>Welcome to your basic Chrome extension!</p>
-    <button id="actionBtn">Click Me</button>
-    <div id="result"></div>
+    
+    <!-- Authentication Section -->
+    <div id="authSection">
+      <div id="loginForm" class="auth-form">
+        <h2>Sign In</h2>
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button id="loginBtn">Sign In</button>
+        <p class="auth-switch">Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+      </div>
+      
+      <div id="signupForm" class="auth-form hidden">
+        <h2>Sign Up</h2>
+        <input type="email" id="signupEmail" placeholder="Email" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
+        <button id="signupBtn">Sign Up</button>
+        <p class="auth-switch">Already have an account? <a href="#" id="showLogin">Sign in</a></p>
+      </div>
+    </div>
+    
+    <!-- User Dashboard -->
+    <div id="userDashboard" class="hidden">
+      <div id="userInfo">
+        <p>Welcome, <span id="userEmail"></span>!</p>
+        <button id="signoutBtn">Sign Out</button>
+      </div>
+      <div id="appContent">
+        <p>You are successfully authenticated!</p>
+        <button id="actionBtn">Click Me</button>
+        <div id="result"></div>
+      </div>
+    </div>
+    
+    <div id="authMessage"></div>
   </div>
+  
+  <script src="supabase.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

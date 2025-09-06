@@ -53,3 +53,95 @@ button:hover {
   text-align: center;
   font-size: 14px;
 }
+
+.auth-form {
+  margin-bottom: 20px;
+}
+
+.auth-form h2 {
+  color: #333;
+  font-size: 16px;
+  margin: 0 0 15px 0;
+  text-align: center;
+}
+
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: 12px;
+  margin: 10px 0 0 0;
+}
+
+.auth-switch a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none;
+}
+
+#userDashboard {
+  text-align: center;
+}
+
+#userInfo {
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 15px;
+}
+
+#userInfo p {
+  margin: 0 0 10px 0;
+  font-weight: 500;
+}
+
+#signoutBtn {
+  background-color: #f44336;
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+#signoutBtn:hover {
+  background-color: #da190b;
+}
+
+#authMessage {
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 12px;
+}
+
+#authMessage.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+#authMessage.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
