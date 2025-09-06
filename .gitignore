@@ -1,0 +1,32 @@
+# Plugin/Extension build artifacts
+*.crx
+*.pem
+*.zip
+dist/
+build/
+
+# Development files
+node_modules/
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
