@@ -30,3 +30,6 @@ logs/
 # Temporary files
 *.tmp
 *.temp
+
+# Example images folder
+example-images/

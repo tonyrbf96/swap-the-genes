@@ -152,6 +152,123 @@ class SupabaseClient {
     }
     return data
   }
+
+  async uploadImage(file, userId) {
+    try {
+      const session = await this.getSession()
+      if (!session?.access_token) {
+        return { data: null, error: { message: 'Not authenticated' } }
+      }
+
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${userId}/${Date.now()}.${fileExt}`
+      
+      const formData = new FormData()
+      formData.append('file', file)
+      
+      const response = await fetch(`${this.url}/storage/v1/object/user-images/${fileName}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'apikey': this.key
+        },
+        body: formData
+      })
+
+      if (!response.ok) {
+        const errorData = await response.text()
+        throw new Error(`Upload failed: ${response.status} ${errorData}`)
+      }
+
+      const data = await response.json()
+      return { 
+        data: { 
+          path: fileName,
+          fullPath: `user-images/${fileName}`,
+          publicUrl: `${this.url}/storage/v1/object/public/user-images/${fileName}`
+        }, 
+        error: null 
+      }
+    } catch (error) {
+      console.error('Upload error:', error)
+      return { data: null, error: { message: error.message } }
+    }
+  }
+
+  async deleteImage(fileName, userId) {
+    try {
+      const session = await this.getSession()
+      if (!session?.access_token) {
+        return { data: null, error: { message: 'Not authenticated' } }
+      }
+
+      // Construct the full object path: userId/filename
+      const objectPath = `${userId}/${fileName}`
+      console.log('Deleting object at path:', objectPath) // Debug log
+
+      const response = await fetch(`${this.url}/storage/v1/object/user-images/${objectPath}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'apikey': this.key
+        }
+      })
+
+      if (!response.ok) {
+        const errorData = await response.text()
+        throw new Error(`Delete failed: ${response.status} ${errorData}`)
+      }
+
+      return { data: { message: 'File deleted successfully' }, error: null }
+    } catch (error) {
+      console.error('Delete error:', error)
+      return { data: null, error: { message: error.message } }
+    }
+  }
+
+  async listUserImages(userId) {
+    try {
+      const session = await this.getSession()
+      if (!session?.access_token) {
+        return { data: [], error: { message: 'Not authenticated' } }
+      }
+
+      const response = await fetch(`${this.url}/storage/v1/object/list/user-images`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'apikey': this.key,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          prefix: `${userId}/`
+        })
+      })
+
+      if (!response.ok) {
+        const errorData = await response.text()
+        throw new Error(`List failed: ${response.status} ${errorData}`)
+      }
+
+      const data = await response.json()
+      console.log('Raw API response:', data) // Debug log
+      
+      const images = data.map(file => ({
+        name: file.name,
+        path: file.name, // Use the exact filename as returned by the API for delete operations
+        fullPath: `user-images/${userId}/${file.name}`, // Keep full path for reference
+        publicUrl: `${this.url}/storage/v1/object/public/user-images/${userId}/${file.name}`,
+        createdAt: file.created_at,
+        size: file.metadata?.size
+      }))
+      
+      console.log('Processed images:', images) // Debug log
+      return { data: images, error: null }
+    } catch (error) {
+      console.error('List images error:', error)
+      return { data: [], error: { message: error.message } }
+    }
+  }
 }
 
 const supabase = new SupabaseClient()

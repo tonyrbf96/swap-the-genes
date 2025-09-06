@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   width: 300px;
-  min-height: 200px;
+  min-height: 400px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -144,4 +144,172 @@ button:hover {
   background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
+}
+
+#imageUploadSection {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+#imageUploadSection h3 {
+  margin: 0 0 15px 0;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+.upload-btn {
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.upload-btn:hover {
+  background-color: #1976D2;
+}
+
+.upload-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+  min-height: 40px;
+}
+
+.preview-item {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-remove {
+  position: absolute;
+  top: -10px;
+  right: 2px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.preview-remove:hover {
+  background-color: #d32f2f;
+}
+
+#uploadProgress {
+  background-color: #e3f2fd;
+  border: 1px solid #bbdefb;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 10px 0;
+  font-size: 12px;
+  color: #1976d2;
+  text-align: center;
+}
+
+#existingImages {
+  margin: 20px 0;
+}
+
+#existingImages h3 {
+  margin: 0 0 15px 0;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 40px;
+}
+
+.gallery-item {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.gallery-item .delete-btn {
+  position: absolute;
+  top: -10px;
+  right: 2px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.gallery-item:hover .delete-btn {
+  opacity: 1;
+}
+
+.gallery-item .delete-btn:hover {
+  background-color: rgba(211, 47, 47, 0.9);
+}
+
+#otherActions {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
 }

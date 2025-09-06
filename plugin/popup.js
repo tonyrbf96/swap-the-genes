@@ -17,8 +17,16 @@ document.addEventListener('DOMContentLoaded', async function() {
   const signupPassword = document.getElementById('signupPassword');
   const userEmail = document.getElementById('userEmail');
   
-  const actionBtn = document.getElementById('actionBtn');
-  const result = document.getElementById('result');
+  // Removed actionBtn and result elements
+  
+  const imageInput = document.getElementById('imageInput');
+  const uploadBtn = document.getElementById('uploadBtn');
+  const imagePreview = document.getElementById('imagePreview');
+  const uploadProgress = document.getElementById('uploadProgress');
+  const imageGallery = document.getElementById('imageGallery');
+  
+  let selectedFiles = [];
+  let currentUser = null;
 
   function showMessage(message, type = 'error') {
     authMessage.textContent = message;
@@ -35,9 +43,12 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
 
   function showUserDashboard(user) {
+    console.log('Setting currentUser to:', user); // Debug log
     authSection.style.display = 'none';
     userDashboard.style.display = 'block';
     userEmail.textContent = user.email;
+    currentUser = user;
+    loadUserImages();
   }
 
   function toggleForms() {
@@ -58,6 +69,223 @@ document.addEventListener('DOMContentLoaded', async function() {
       showAuthSection();
     }
   }
+
+  function validateImageFile(file) {
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    
+    if (!validTypes.includes(file.type)) {
+      return { valid: false, error: 'Please select a valid image file (JPEG, PNG, GIF, WebP)' };
+    }
+    
+    if (file.size > maxSize) {
+      return { valid: false, error: 'Image size must be less than 5MB' };
+    }
+    
+    return { valid: true };
+  }
+
+  function updateImagePreview() {
+    imagePreview.innerHTML = '';
+    
+    selectedFiles.forEach((file, index) => {
+      const previewItem = document.createElement('div');
+      previewItem.className = 'preview-item';
+      
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'preview-remove';
+      removeBtn.textContent = '×';
+      removeBtn.onclick = () => removeSelectedImage(index);
+      
+      previewItem.appendChild(img);
+      previewItem.appendChild(removeBtn);
+      imagePreview.appendChild(previewItem);
+    });
+    
+    updateUploadButtonState();
+  }
+
+  function removeSelectedImage(index) {
+    selectedFiles.splice(index, 1);
+    updateImagePreview();
+  }
+
+  function updateUploadButtonState() {
+    const totalImages = selectedFiles.length;
+    
+    if (totalImages >= 5) {
+      uploadBtn.textContent = 'Maximum 5 images selected';
+      uploadBtn.disabled = true;
+    } else if (totalImages === 0) {
+      uploadBtn.textContent = 'Choose Images';
+      uploadBtn.disabled = false;
+    } else {
+      uploadBtn.textContent = `Upload ${totalImages} image${totalImages > 1 ? 's' : ''}`;
+      uploadBtn.disabled = false;
+    }
+  }
+
+  async function loadUserImages() {
+    console.log('loadUserImages - currentUser:', currentUser); // Debug log
+    if (!currentUser) return;
+    
+    try {
+      console.log('Loading images for user ID:', currentUser.id); // Debug log
+      const { data: images, error } = await supabase.listUserImages(currentUser.id);
+      
+      if (error) {
+        console.error('Failed to load images:', error);
+        return;
+      }
+      
+      displayUserImages(images);
+    } catch (error) {
+      console.error('Error loading images:', error);
+    }
+  }
+
+  function displayUserImages(images) {
+    imageGallery.innerHTML = '';
+    
+    console.log('Displaying images:', images); // Debug log
+    
+    if (!images || images.length === 0) {
+      imageGallery.innerHTML = '<p style="color: #666; font-size: 12px; text-align: center; width: 100%;">No images uploaded yet</p>';
+      return;
+    }
+    
+    images.forEach((image) => {
+      console.log('Processing image:', image); // Debug log
+      
+      const galleryItem = document.createElement('div');
+      galleryItem.className = 'gallery-item';
+      
+      const img = document.createElement('img');
+      img.src = image.publicUrl;
+      img.alt = 'User image';
+      img.onclick = () => openImageModal(image.publicUrl);
+      
+      // Add error handling for image loading
+      img.onerror = () => {
+        console.error('Failed to load image:', image.publicUrl);
+        img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZjVmNWY1Ii8+Cjx0ZXh0IHg9IjQwIiB5PSI0NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM5OTkiPkVycm9yPC90ZXh0Pgo8L3N2Zz4K';
+      };
+      
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'delete-btn';
+      deleteBtn.textContent = '×';
+      deleteBtn.onclick = (e) => {
+        e.stopPropagation();
+        deleteUserImage(image.name);
+      };
+      
+      galleryItem.appendChild(img);
+      galleryItem.appendChild(deleteBtn);
+      imageGallery.appendChild(galleryItem);
+    });
+  }
+
+  function openImageModal(imageUrl) {
+    window.open(imageUrl, '_blank');
+  }
+
+  async function deleteUserImage(fileName) {
+    if (!confirm('Are you sure you want to delete this image?')) return;
+    
+    console.log('Attempting to delete image:', fileName, 'for user:', currentUser); // Debug log
+    
+    if (!currentUser || !currentUser.id) {
+      console.error('Current user or user ID not available:', currentUser);
+      showMessage('User not authenticated');
+      return;
+    }
+    
+    try {
+      const { error } = await supabase.deleteImage(fileName, currentUser.id);
+      
+      if (error) {
+        showMessage('Failed to delete image: ' + error.message);
+        return;
+      }
+      
+      showMessage('Image deleted successfully!', 'success');
+      loadUserImages();
+    } catch (error) {
+      console.error('Delete error:', error);
+      showMessage('Error deleting image');
+    }
+  }
+
+  async function uploadImages() {
+    if (selectedFiles.length === 0 || !currentUser) return;
+    
+    uploadProgress.style.display = 'block';
+    uploadProgress.textContent = 'Uploading images...';
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = 'Uploading...';
+    
+    try {
+      const uploadPromises = selectedFiles.map(async (file, index) => {
+        uploadProgress.textContent = `Uploading image ${index + 1} of ${selectedFiles.length}...`;
+        const result = await supabase.uploadImage(file, currentUser.id);
+        return result;
+      });
+      
+      const results = await Promise.all(uploadPromises);
+      const errors = results.filter(result => result.error);
+      
+      if (errors.length > 0) {
+        showMessage(`Some uploads failed: ${errors.map(e => e.error.message).join(', ')}`);
+      } else {
+        showMessage('All images uploaded successfully!', 'success');
+        selectedFiles = [];
+        updateImagePreview();
+        loadUserImages();
+      }
+    } catch (error) {
+      showMessage('Upload error: ' + error.message);
+    } finally {
+      uploadProgress.style.display = 'none';
+      updateUploadButtonState();
+    }
+  }
+
+  uploadBtn.addEventListener('click', () => {
+    if (selectedFiles.length === 0) {
+      imageInput.click();
+    } else {
+      uploadImages();
+    }
+  });
+
+  imageInput.addEventListener('change', (e) => {
+    const files = Array.from(e.target.files);
+    const currentTotal = selectedFiles.length;
+    const maxAllowed = 5 - currentTotal;
+    
+    if (files.length > maxAllowed) {
+      showMessage(`You can only upload ${maxAllowed} more image${maxAllowed !== 1 ? 's' : ''}`);
+      files.splice(maxAllowed);
+    }
+    
+    const validFiles = [];
+    for (const file of files) {
+      const validation = validateImageFile(file);
+      if (validation.valid) {
+        validFiles.push(file);
+      } else {
+        showMessage(validation.error);
+      }
+    }
+    
+    selectedFiles.push(...validFiles);
+    updateImagePreview();
+    
+    imageInput.value = '';
+  });
 
   showSignup.addEventListener('click', (e) => {
     e.preventDefault();
@@ -152,23 +380,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   });
 
-  if (actionBtn) {
-    actionBtn.addEventListener('click', function() {
-      result.textContent = 'Button clicked! Extension is working.';
-      result.style.color = '#4CAF50';
-    });
-  }
-
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    const currentTab = tabs[0];
-    if (currentTab && userDashboard.style.display !== 'none') {
-      const urlDisplay = document.createElement('p');
-      urlDisplay.textContent = `Current URL: ${currentTab.url}`;
-      urlDisplay.style.fontSize = '12px';
-      urlDisplay.style.color = '#666';
-      document.querySelector('#appContent').appendChild(urlDisplay);
-    }
-  });
+  // Removed actionBtn event listener and URL display functionality
 
   await checkAuthState();
 });

@@ -34,9 +34,22 @@
         <button id="signoutBtn">Sign Out</button>
       </div>
       <div id="appContent">
-        <p>You are successfully authenticated!</p>
-        <button id="actionBtn">Click Me</button>
-        <div id="result"></div>
+        <div id="imageUploadSection">
+          <h3>Upload Your Photos (Max 5)</h3>
+          <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
+          <button id="uploadBtn" class="upload-btn">Choose Images</button>
+          <div id="imagePreview" class="image-preview"></div>
+          <div id="uploadProgress" class="hidden"></div>
+        </div>
+        
+        <div id="existingImages">
+          <h3>Your Images</h3>
+          <div id="imageGallery" class="image-gallery"></div>
+        </div>
+        
+        <div id="otherActions">
+          <!-- Additional actions can be added here -->
+        </div>
       </div>
     </div>
     
