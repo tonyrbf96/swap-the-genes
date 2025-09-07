@@ -13,6 +13,8 @@ node_modules/
 .env.test
 .env.production
 
+supabase/
+
 # IDE files
 .vscode/
 .idea/

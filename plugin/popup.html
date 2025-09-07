@@ -6,57 +6,120 @@
 </head>
 <body>
   <div class="container">
-    <h1>dressmeup</h1>
+    <h1>Swap the Genes</h1>
     
-    <!-- Authentication Section -->
-    <div id="authSection">
-      <div id="loginForm" class="auth-form">
-        <h2>Sign In</h2>
-        <input type="email" id="loginEmail" placeholder="Email" required>
-        <input type="password" id="loginPassword" placeholder="Password" required>
-        <button id="loginBtn">Sign In</button>
-        <p class="auth-switch">Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+    <!-- API Key Section -->
+    <div id="apiKeySection">
+      <h3>Fal.ai API Configuration</h3>
+      <input type="password" id="falApiKey" placeholder="Enter your fal.ai API key" required>
+      <button id="saveApiKeyBtn">Save API Key</button>
+    </div>
+    
+    <!-- AI Section -->
+    <div id="aiSection">
+      <h3>AI Model Replacement</h3>
+      <div id="personSelector">
+        <label for="famousPerson">Replace model with:</label>
+        <select id="famousPerson">
+          <optgroup label="Actors & Actresses">
+            <option value="Will Smith">Will Smith</option>
+            <option value="Scarlett Johansson">Scarlett Johansson</option>
+            <option value="Ryan Reynolds">Ryan Reynolds</option>
+            <option value="Jennifer Lawrence">Jennifer Lawrence</option>
+            <option value="Chris Hemsworth">Chris Hemsworth</option>
+            <option value="Emma Stone">Emma Stone</option>
+            <option value="Leonardo DiCaprio">Leonardo DiCaprio</option>
+            <option value="Margot Robbie">Margot Robbie</option>
+            <option value="Sydney Sweeney">Sydney Sweeney</option>
+            <option value="Zendaya">Zendaya</option>
+            <option value="Tom Holland">Tom Holland</option>
+            <option value="Anya Taylor-Joy">Anya Taylor-Joy</option>
+            <option value="Timothée Chalamet">Timothée Chalamet</option>
+            <option value="Millie Bobby Brown">Millie Bobby Brown</option>
+            <option value="Jacob Elordi">Jacob Elordi</option>
+            <option value="Jenna Ortega">Jenna Ortega</option>
+            <option value="Florence Pugh">Florence Pugh</option>
+            <option value="Paul Rudd">Paul Rudd</option>
+            <option value="Keanu Reeves">Keanu Reeves</option>
+            <option value="Gal Gadot">Gal Gadot</option>
+            <option value="Michael B. Jordan">Michael B. Jordan</option>
+            <option value="Brie Larson">Brie Larson</option>
+            <option value="Robert Downey Jr.">Robert Downey Jr.</option>
+            <option value="Chris Evans">Chris Evans</option>
+          </optgroup>
+          <optgroup label="Musicians">
+            <option value="Taylor Swift">Taylor Swift</option>
+            <option value="Ariana Grande">Ariana Grande</option>
+            <option value="Billie Eilish">Billie Eilish</option>
+            <option value="Harry Styles">Harry Styles</option>
+            <option value="Dua Lipa">Dua Lipa</option>
+            <option value="The Weeknd">The Weeknd</option>
+            <option value="Drake">Drake</option>
+            <option value="Olivia Rodrigo">Olivia Rodrigo</option>
+            <option value="Bad Bunny">Bad Bunny</option>
+            <option value="Doja Cat">Doja Cat</option>
+            <option value="Justin Bieber">Justin Bieber</option>
+            <option value="Selena Gomez">Selena Gomez</option>
+            <option value="Rihanna">Rihanna</option>
+            <option value="Beyoncé">Beyoncé</option>
+            <option value="Lady Gaga">Lady Gaga</option>
+          </optgroup>
+          <optgroup label="Athletes">
+            <option value="LeBron James">LeBron James</option>
+            <option value="Serena Williams">Serena Williams</option>
+            <option value="Cristiano Ronaldo">Cristiano Ronaldo</option>
+            <option value="Lionel Messi">Lionel Messi</option>
+            <option value="Stephen Curry">Stephen Curry</option>
+            <option value="Tom Brady">Tom Brady</option>
+            <option value="Simone Biles">Simone Biles</option>
+            <option value="Lewis Hamilton">Lewis Hamilton</option>
+            <option value="Naomi Osaka">Naomi Osaka</option>
+          </optgroup>
+          <optgroup label="Politicians & Public Figures">
+            <option value="Donald Trump">Donald Trump</option>
+            <option value="Joe Biden">Joe Biden</option>
+            <option value="Barack Obama">Barack Obama</option>
+            <option value="Michelle Obama">Michelle Obama</option>
+            <option value="Kamala Harris">Kamala Harris</option>
+            <option value="Alexandria Ocasio-Cortez">Alexandria Ocasio-Cortez</option>
+            <option value="Ron DeSantis">Ron DeSantis</option>
+            <option value="Justin Trudeau">Justin Trudeau</option>
+            <option value="Emmanuel Macron">Emmanuel Macron</option>
+            <option value="Jacinda Ardern">Jacinda Ardern</option>
+            <option value="Volodymyr Zelenskyy">Volodymyr Zelenskyy</option>
+            <option value="Vladimir Putin">Vladimir Putin</option>
+            <option value="Xi Jinping">Xi Jinping</option>
+            <option value="Pope Francis">Pope Francis</option>
+            <option value="Oprah Winfrey">Oprah Winfrey</option>
+          </optgroup>
+          <optgroup label="Tech & Business">
+            <option value="Elon Musk">Elon Musk</option>
+            <option value="Bill Gates">Bill Gates</option>
+            <option value="Jeff Bezos">Jeff Bezos</option>
+            <option value="Mark Zuckerberg">Mark Zuckerberg</option>
+            <option value="Tim Cook">Tim Cook</option>
+            <option value="Warren Buffett">Warren Buffett</option>
+            <option value="Sundar Pichai">Sundar Pichai</option>
+            <option value="Satya Nadella">Satya Nadella</option>
+            <option value="Jack Dorsey">Jack Dorsey</option>
+            <option value="Richard Branson">Richard Branson</option>
+            <option value="Steve Jobs">Steve Jobs</option>
+          </optgroup>
+          <optgroup label="Influencers & Content Creators">
+            <option value="MrBeast">MrBeast</option>
+            <option value="Emma Chamberlain">Emma Chamberlain</option>
+            <option value="Addison Rae">Addison Rae</option>
+            <option value="Charli D'Amelio">Charli D'Amelio</option>
+            <option value="PewDiePie">PewDiePie</option>
+            <option value="Logan Paul">Logan Paul</option>
+          </optgroup>
+        </select>
       </div>
       
-      <div id="signupForm" class="auth-form hidden">
-        <h2>Sign Up</h2>
-        <input type="email" id="signupEmail" placeholder="Email" required>
-        <input type="password" id="signupPassword" placeholder="Password" required>
-        <button id="signupBtn">Sign Up</button>
-        <p class="auth-switch">Already have an account? <a href="#" id="showLogin">Sign in</a></p>
-      </div>
+      <div id="status"></div>
     </div>
-    
-    <!-- User Dashboard -->
-    <div id="userDashboard" class="hidden">
-      <div id="userInfo">
-        <p>Welcome, <span id="userEmail"></span>!</p>
-        <button id="signoutBtn">Sign Out</button>
-      </div>
-      <div id="appContent">
-        <div id="imageUploadSection">
-          <h3>Upload Your Photos (Max 5)</h3>
-          <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
-          <button id="uploadBtn" class="upload-btn">Choose Images</button>
-          <div id="imagePreview" class="image-preview"></div>
-          <div id="uploadProgress" class="hidden"></div>
-        </div>
-        
-        <div id="existingImages">
-          <h3>Your Images</h3>
-          <div id="imageGallery" class="image-gallery"></div>
-        </div>
-        
-        <div id="otherActions">
-          <!-- Additional actions can be added here -->
-        </div>
-      </div>
-    </div>
-    
-    <div id="authMessage"></div>
   </div>
   
-  <script src="supabase.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

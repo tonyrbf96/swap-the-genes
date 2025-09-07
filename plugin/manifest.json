@@ -1,21 +1,40 @@
 {
   "manifest_version": 3,
-  "name": "dressmeup",
+  "name": "Swap the Genes",
   "version": "1.0",
-  "description": "A Chrome extension with Supabase authentication",
+  "description": "AI-powered celebrity face swap for American Eagle website",
+  "icons": {
+    "16": "icons/icon.png",
+    "32": "icons/icon.png",
+    "48": "icons/icon.png",
+    "128": "icons/icon.png"
+  },
   "permissions": [
     "activeTab",
     "storage"
   ],
   "host_permissions": [
-    "http://127.0.0.1:54321/*",
-    "https://*.supabase.co/*"
+    "https://*.ae.com/*",
+    "https://ae.com/*",
+    "https://*.fal.ai/*",
+    "https://queue.fal.run/*",
+    "https://fal.run/*"
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' http://127.0.0.1:54321 https://*.supabase.co;"
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://*.ae.com https://*.fal.ai https://queue.fal.run https://fal.run;"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.ae.com/*", "https://ae.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "dressmeup"
+    "default_title": "Swap the Genes"
   }
 }
