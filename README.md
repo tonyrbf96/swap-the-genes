@@ -11,7 +11,7 @@ AI-powered celebrity face swap extension for American Eagle website. Replace pro
   - Politicians (Donald Trump, Barack Obama, Elon Musk, etc.)
   - Tech Leaders & Influencers
 
-- 🔄 **Real-time AI Processing** using fal.ai's nano-banana model
+- 🔄 **Real-time AI Processing** using Gemini's nano-banana model
 - 🎯 **Smart Detection** works on American Eagle product pages
 - 🖼️ **Seamless Integration** preserves original image layout and styling
 - 🔐 **Secure** - your API key is stored locally
@@ -79,7 +79,7 @@ Currently supports:
 
 ## Technical Details
 
-- **AI Model**: fal.ai nano-banana/edit
+- **AI Model**: Gemini nano-banana
 - **Framework**: Chrome Extension Manifest V3
 - **Storage**: Chrome local storage (secure)
 - **Processing**: Real-time synchronous API calls
